@@ -1,7 +1,7 @@
 {
-  "name": "homebridge-sonoff-mini-api-rest",
+  "name": "homebridge-sonoff-mini-diy",
   "version": "1.2.0",
-  "description": "Plugin for Sonoff Mini",
+  "description": "Homebridge plugin for Sonoff Mini",
   "main": "index.js",
   "author": "Paul Woods <itekhi@yandex.ru>",
   "engines": {
@@ -18,10 +18,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/itekhi/homebridge-sonoff-mini-api-rest.git"
+    "url": "git://github.com/itekhi/homebridge-sonoff-mini-diy.git"
   },
   "bugs": {
-    "url": "https://github.com/myroom/homebridge-sonoff-mini-api-rest/issues"
+    "url": "https://github.com/itekhi/homebridge-sonoff-mini-diy/issues"
   },
   "license": "ISC"
 }

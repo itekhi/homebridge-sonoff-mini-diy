@@ -37,6 +37,9 @@ function SonoffAccessory(log, config) {
     case "fan":
       this.service = new Service.Fan(this.name);
       break;
+    case "lightbulb":
+      this.service = new Service.Lightbulb(this.name);
+      break;
     default:
       this.service = new Service.Lightbulb(this.name);
       break;
@@ -53,12 +56,12 @@ SonoffAccessory.prototype.getState = function (callback) {
 
   superagent
     .post(this.url + "/zeroconf/info")
-    .send({ deviceid: this.id, data: {} }) // sends a JSON post body
+    .send({ deviceid: this.id, data: {} })
     .set("X-API-Key", "foobar")
     .set("accept", "json")
-    .timeout({ response: 1500, deadline: 2000 })
+    .timeout({ response: 2000, deadline: 3000 }) // FIX: Timeout after 3 seconds
     .end((error, response) => {
-      if (!error && response?.statusCode == 200) {
+      if (!error && response && response.statusCode == 200) {
         var json = response.body;
         var state = json.data.switch;
 
@@ -76,6 +79,7 @@ SonoffAccessory.prototype.getState = function (callback) {
         this.lastState = on; // Sync local cache
         callback(null, on);
       } else {
+        // If network fails, log it but don't crash.
         var msg = error ? error.message : "Unknown Error";
         this.log("Function getState(). Error getting state: %s", msg);
         callback(error);
@@ -87,32 +91,37 @@ SonoffAccessory.prototype.setState = function (state, callback) {
   var SonoffState = state == true ? "on" : "off";
   this.log("Set state to %s", SonoffState);
 
+  // FIX: Optimistic Update.
+  // We tell Homebridge "Success" immediately so the UI doesn't lag.
+  callback(null);
+
   superagent
     .post(this.url + "/zeroconf/switch")
-    .send({ deviceid: this.id, data: { switch: SonoffState } }) // sends a JSON post body
+    .send({ deviceid: this.id, data: { switch: SonoffState } })
     .set("X-API-Key", "foobar")
     .set("accept", "json")
-    .timeout({ response: 2000, deadline: 3000 })
+    .timeout({ response: 2000, deadline: 3000 }) // FIX: Timeout after 3 seconds
     .end((error, response) => {
-      if (!error && response?.statusCode == 200) {
+      if (!error && response && response.statusCode == 200) {
         if (this.debug)
           this.log(
-            `setState() request returned successfully (${response.statusCode}). Body: ` +
+            "setState() request returned successfully (" +
+              response.statusCode +
+              "). Body: " +
               JSON.stringify(response),
           );
 
-        callback(null, state);
+        // Success! We update our local cache
         this.lastState = state;
       } else {
         var msg = error ? error.message : "Unknown Error";
         this.log("Function setState(). Error setting state: %s", msg);
-        callback(error);
 
-        // REVERT: We must tell HomeKit to flip the switch back.
-        // setTimeout(() => {
-        //   this.service.getCharacteristic(Characteristic.On).updateValue(!state);
-        //   // We wait 1s to ensure the UI animation has finished before flipping it back.
-        // }, 750);
+        // REVERT: The network request failed, so we must tell HomeKit to flip the switch back.
+        // We wait 1s to ensure the UI animation has finished before flipping it back.
+        setTimeout(() => {
+          this.service.getCharacteristic(Characteristic.On).updateValue(!state);
+        }, 1000);
       }
     });
 };

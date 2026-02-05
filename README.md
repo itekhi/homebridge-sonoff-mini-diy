@@ -1,18 +1,19 @@
-[![npm](https://badgen.net/npm/v/homebridge-sonoff-mini-api-rest/latest)](https://www.npmjs.com/package/homebridge-sonoff-mini-api-rest)
-[![npm](https://badgen.net/npm/dt/homebridge-sonoff-mini-api-rest)](https://www.npmjs.com/package/homebridge-sonoff-mini-api-rest)
+<!--[![npm](https://badgen.net/npm/v/homebridge-sonoff-mini-diy/latest)](https://www.npmjs.com/package/homebridge-sonoff-mini-diy)-->
+<!--[![npm](https://badgen.net/npm/dt/homebridge-sonoff-mini-diy)](https://www.npmjs.com/package/homebridge-sonoff-mini-diy)-->
 
+# homebridge-sonoff-mini-diy
 
-# homebridge-sonoff-mini-api-rest
+A fork of myroom/homebridge-sonoff-mini-api-rest, but fixes "This plugin slows down Homebridge" error, with some additions...
 
-<a href="https://www.buymeacoffee.com/myroom" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" style="height: 51px !important;width: 217px !important;" ></a>
+<!--<a href="https://www.buymeacoffee.com/myroom" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" style="height: 51px !important;width: 217px !important;" ></a>-->
 
-This plug-in enables you to control your Sonoff Mini DIY mode light bulb. To switch to mode, follow this <a href="https://github.com/itead/Sonoff_Devices_DIY_Tools/blob/master/SONOFF%20DIY%20MODE%20Protocol%20Doc%20v1.4.md"> instruction</a>
+This plugin enables you to control your Sonoff Mini DIY mode light bulb. To switch to mode, follow this <a href="https://github.com/itead/Sonoff_Devices_DIY_Tools/blob/master/SONOFF%20DIY%20MODE%20Protocol%20Doc%20v1.4.md"> instruction</a>
 
 ## Installation
 
 Run the following command
 ```
-npm install -g homebridge-sonoff-mini-api-rest
+npm install -g homebridge-sonoff-mini-diy
 ```
 
 Chances are you are going to need sudo with that.
